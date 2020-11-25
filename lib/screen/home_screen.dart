@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:khata_app/modal/khata.dart';
 import 'package:khata_app/modal/khata_datas.dart';
+import 'package:khata_app/screen/edit_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return  Scaffold(
           appBar: AppBar(
-            title: Center(child: Text('KHATA RECORD'),),
+            title: Center(child: Text('DATA RECORD'),),
           ),
 
           body: ListView.separated(
@@ -37,48 +39,67 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
 
 
-                    Container(
-                      height:MediaQuery.of(context).size.height/4,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.amber,
+                       Container(
+                        height:MediaQuery.of(context).size.height/4,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.lightBlueAccent,
 
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:[
-                              Text(data.getKhataList()[position].lenderName,
-                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: (){},
+
+
+                               SizedBox(
+                                 height:20,
+                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children:[
+                                    Text(data.getKhataList()[position].lenderName,
+                                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
+
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: (){
+
+                                        Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => EditScreen(
+                                              _khata),
+                                        ));
+
+                                      },
+                                    ),
+                                  ],
                               ),
-                            ],
-                          ),
+                               ),
 
-                          Text(data.getKhataList()[position].itemName,
-                            style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                         Divider(),
 
-                          Text(data.getKhataList()[position].lenderMoney,
-                            style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Text(data.getKhataList()[position].itemName,
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Divider(),
 
-                          Text(data.getKhataList()[position].remark,
-                            style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Text(data.getKhataList()[position].lenderMoney,
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Divider(),
 
-                          Text(data.getKhataList()[position].date,
-                            style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Text(data.getKhataList()[position].remark,
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                            Divider(),
 
-                        ],
+                            Text(data.getKhataList()[position].date,
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+
+                          ],
+                        ),
+
+
                       ),
+                  ], ),
 
 
-                    ),
-                  ],
+                );
 
-                ),
-              );
 
             },
             separatorBuilder: (context,position){
@@ -90,85 +111,111 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           floatingActionButton: FloatingActionButton(
+
+            child: IconButton(
+              icon: Icon(Icons.add,
+              color: Colors.white,),
+            ),
             onPressed: (){
 
+
+
               showModalBottomSheet(
+
+                isScrollControlled: true,
+
                   context:context,
                   builder:(context){
 
-                    return Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: "Name",
+
+                    return Container(
+                      height: 600,
+
+
+                      child: ListView(
+                        children: [
+                          Column(
+                            children: [
+                              TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Name",
+                                ),
+
+                                onChanged: (value){
+                                  _khata.lenderName=value;
+                                },
+                              ),
+
+                              TextField(
+                                onChanged: (value){
+                                  _khata.itemName = value;
+                                },
+
+                                decoration: InputDecoration(
+                                  hintText: "Item Name",
+
+                                ),
+                              ),
+
+                              TextField(
+                                onChanged: (value){
+                                  _khata.lenderMoney = value;
+                                },
+
+                                decoration: InputDecoration(
+
+                                  hintText: "Money",
+
+                                ),
+                              ),
+
+                              TextField(
+                                onChanged: (value){
+                                  _khata.remark = value;
+                                },
+                                decoration: InputDecoration(
+
+                                  hintText: "Remark",
+
+                                ),
+                              ),
+
+                              TextField(
+                                onChanged: (value){
+                                  _khata.date = value;
+                                },
+                                decoration: InputDecoration(
+
+                                  hintText: "Date",
+
+                                ),
+                              ),
+
+                              SizedBox(
+                                height: MediaQuery.of(context).viewInsets.bottom == 0 ? 10 : 300,
+                              ),
+
+
+                              RaisedButton(
+                                onPressed: (){
+
+                                  data.addKhata(_khata);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('SAVE'),
+                              ),
+
+                            ],
                           ),
+                        ],
 
-                          onChanged: (value){
-                           _khata.lenderName=value;
-                          },
-                        ),
-
-                        TextField(
-                          onChanged: (value){
-                            _khata.itemName = value;
-                          },
-
-                          decoration: InputDecoration(
-                            hintText: "Name",
-
-                          ),
-                        ),
-
-                        TextField(
-                          onChanged: (value){
-                            _khata.lenderMoney = value;
-                          },
-
-                          decoration: InputDecoration(
-
-                            hintText: "Name",
-
-                          ),
-                        ),
-
-                        TextField(
-                          onChanged: (value){
-                            _khata.remark = value;
-                          },
-                          decoration: InputDecoration(
-
-                            hintText: "Name",
-
-                          ),
-                        ),
-
-                        TextField(
-                          onChanged: (value){
-                            _khata.date = value;
-                          },
-                          decoration: InputDecoration(
-
-                            hintText: "Name",
-
-                          ),
-                        ),
-
-                        RaisedButton(
-                          onPressed: (){},
-                          child: Text('SAVE'),
-                        ),
-
-                      ],
+                      ),
                     );
 
                   }
               );
             },
-            child: IconButton(
-              onPressed: (){},
-              icon: Icon(Icons.add,
-                color: Colors.white70,),
-            ),
+
           ),
         );
 

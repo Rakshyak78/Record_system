@@ -7,11 +7,40 @@ class KhataDatas extends ChangeNotifier{
 
 void addKhata(Khata khata){
 
-      _khataDatas.add(khata);
+      _khataDatas.add(Khata(
+        lenderName: khata.lenderName,
+        itemName: khata.itemName,
+        lenderMoney: khata.lenderMoney,
+        remark: khata.remark,
+        date: khata.date,
+
+      ));
+
+      notifyListeners();
 }
 
  List<Khata> getKhataList(){
   return _khataDatas;
+}
+
+void updateKhata( Khata khata){
+  _khataDatas.add(Khata(
+
+    lenderName: khata.lenderName,
+    itemName: khata.itemName,
+    lenderMoney: khata.lenderMoney,
+    remark: khata.remark,
+    date: khata.date,
+  ));
+
+  notifyListeners();
+
+
+}
+
+void removeKhata(){
+
+  notifyListeners();
 
 }
 
