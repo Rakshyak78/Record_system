@@ -1,4 +1,4 @@
-# khata_app
+# data record
 
 A new Flutter application.
 
